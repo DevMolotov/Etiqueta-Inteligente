@@ -1,4 +1,4 @@
-# Smart Pricing: Precificação Dinâmica com IA (Raspberry Pi + Google Gemini + OLED)
+# Smart Pricing: Precificação Dinâmica com IA
 
 Este projeto transforma um **Raspberry Pi** em um sistema inteligente de balcão. Ele utiliza a nova API oficial do **Google Gemini (`google-genai`)** para analisar o perfil de um cliente em tempo real e calcular um preço exclusivo e personalizado, aplicando regras de negócio de forma lógica e autônoma. O valor final e as interações visuais são exibidos em um **Display Gráfico OLED I2C (0.96")**.
 
