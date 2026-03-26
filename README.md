@@ -1,40 +1,41 @@
-# 🏷️ Sistema de Precificação Dinâmica com IA (Raspberry Pi)
+# 🤖 Smart Pricing: Precificação Dinâmica com IA (Raspberry Pi + Google Gemini)
 
-Este projeto é um protótipo de sistema embarcado em um **Raspberry Pi** que avalia o perfil de um cliente e gera um preço personalizado dinamicamente. O resultado (valor final) é exibido em tempo real em um **Display LCD 16x2 via interface I2C**.
-
-Atualmente, o código simula o tempo de processamento e a lógica de uma Inteligência Artificial, servindo como base estrutural para a futura integração com modelos de Machine Learning (como `scikit-learn`) ou APIs externas (como Google Gemini).
+Este projeto transforma um **Raspberry Pi** em um sistema inteligente de balcão. Ele utiliza a API do **Google Gemini (Generative AI)** para analisar o perfil de um cliente em tempo real e calcular um preço exclusivo e personalizado, aplicando regras de negócio e descontos de forma lógica e autônoma. O valor final é exibido para o cliente em um **Display LCD 16x2 via interface I2C**.
 
 ## 🛠️ Hardware Necessário
 
-* 1x Raspberry Pi (Modelo 3 ou 4 recomendado)
+* 1x Raspberry Pi (Recomendado Pi 3 ou Pi 4)
 * 1x Display LCD 16x2
-* 1x Módulo I2C para Display LCD (Geralmente soldado ao display)
+* 1x Módulo adaptador I2C para LCD
 * 4x Cabos Jumper Fêmea-Fêmea
-* Fonte de alimentação adequada para o Raspberry Pi
+* Fonte de alimentação (5V/3A)
 
-## 🔌 Esquema de Ligação (Pinout)
+## 🔌 Esquema de Ligação (Pinout I2C)
 
-A comunicação entre o Raspberry Pi e o display é feita através do barramento I2C. Conecte os pinos da seguinte forma:
+A comunicação com a tela utiliza o barramento I2C. Conecte os pinos da seguinte maneira:
 
-| Pino no LCD I2C | Pino no Raspberry Pi (Físico) | Função |
+| Pino no Módulo I2C | Pino no Raspberry Pi (Físico) | Função |
 | :--- | :--- | :--- |
 | **GND** | Pino 6 | Terra (Ground) |
-| **VCC** | Pino 2 ou 4 | Alimentação (5V) |
-| **SDA** | Pino 3 (GPIO 2) | Dados (Serial Data) |
-| **SCL** | Pino 5 (GPIO 3) | Clock (Serial Clock) |
+| **VCC** | Pino 2 ou 4 | Alimentação (5V obrigatório para o backlight) |
+| **SDA** | Pino 3 (GPIO 2) | Dados |
+| **SCL** | Pino 5 (GPIO 3) | Clock |
 
-> **Atenção:** A maioria dos displays 16x2 exige 5V no VCC para que a luz de fundo (backlight) funcione corretamente com bom contraste.
+## ⚙️ Configuração Inicial (Raspberry Pi OS)
 
-## ⚙️ Configuração do Ambiente
+### 1. Habilitar o I2C no Sistema
+Antes de rodar o código, a porta I2C deve estar ativada:
+1. No terminal, rode: `sudo raspi-config`
+2. Vá em **Interface Options** > **I2C** e selecione **Yes**.
+3. Reinicie o sistema: `sudo reboot`.
+4. *(Opcional)* Para verificar se a tela foi reconhecida e descobrir o endereço (ex: `0x27` ou `0x3F`), instale o `i2c-tools` e rode `i2cdetect -y 1`.
 
-### 1. Habilitar a interface I2C no Raspberry Pi
-Antes de rodar o código, é obrigatório ativar o I2C no sistema operacional do Raspberry Pi:
-1. Abra o terminal e digite: `sudo raspi-config`
-2. Navegue até **Interface Options** > **I2C**.
-3. Selecione **Yes** para habilitar e reinicie o Raspberry Pi.
-
-### 2. Instalar as Dependências (Python)
-O projeto utiliza a biblioteca `RPLCD` para facilitar a comunicação com o display. Instale-a via `pip`:
+### 2. Preparar o Ambiente Python
+Recomenda-se o uso de um ambiente virtual (venv) para evitar conflitos com o sistema operacional (especialmente no Raspberry Pi OS Bookworm ou superior).
 
 ```bash
-pip install RPLCD smbus2
+# Crie o ambiente virtual
+python3 -m venv venv
+
+# Ative o ambiente
+source venv/bin/activate
