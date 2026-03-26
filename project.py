@@ -5,9 +5,7 @@ from luma.core.render import canvas
 from luma.oled.device import ssd1306
 from PIL import ImageFont
 
-# ==========================================
 # CONFIGURAÇÕES DE HARDWARE (OLED)
-# ==========================================
 # Inicia a comunicação I2C na porta 1, com o endereço do OLED
 serial = i2c(port=1, address=0x3C)
 
@@ -18,10 +16,9 @@ device = ssd1306(serial)
 # No futuro, você pode baixar arquivos .ttf e carregar fontes customizadas!
 fonte_padrao = ImageFont.load_default()
 
-# ==========================================
 # CONFIGURAÇÕES DA IA (GEMINI)
-# ==========================================
-MINHA_CHAVE_API = "Insira a chave da API aqui(de preferência use a do Gemini)" 
+
+MINHA_CHAVE_API = "Insira a chave da API aqui(para testes foi utilizada a versão free do Google AI Studio)" 
 client = genai.Client(api_key=MINHA_CHAVE_API)
 
 def calcular_preco_gemini(perfil_cliente):
@@ -53,9 +50,7 @@ def exibir_texto_oled(linha1, linha2=""):
         if linha2:
             draw.text((0, 16), linha2, fill="white", font=fonte_padrao)
 
-# ==========================================
 # LOOP PRINCIPAL DO SISTEMA
-# ==========================================
 try:
     print("Sistema OLED iniciado. Pressione CTRL+C para encerrar.")
     
